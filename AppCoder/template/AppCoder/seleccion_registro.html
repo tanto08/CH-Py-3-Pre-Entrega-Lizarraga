@@ -1,0 +1,21 @@
+{% extends 'padre.html' %}
+
+{% load static %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <h1 class="mb-4">Selecciona tu tipo de usuario</h1>
+            <div class="d-grid gap-3">
+                <a href="{% url 'registro_alumno' %}" class="btn btn-primary btn-lg py-3">
+                    <i class="bi bi-person-video2 me-2"></i> Registrarse como Alumno
+                </a>
+                <a href="{% url 'registro_profesor' %}" class="btn btn-secondary btn-lg py-3">
+                    <i class="bi bi-person-badge me-2"></i> Registrarse como Profesor
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

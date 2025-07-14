@@ -1,0 +1,30 @@
+{% extends "padre.html" %}
+
+{% load static %}
+
+{% block contenido %}
+
+    <table class="table">
+        <tr>
+            <th>id</th>
+            <th>Nombre</th>
+            <th>Camada</th>
+        </tr>
+        {% for n in cursos %}
+        <tr>
+            <td>{{n.id}}</td>
+            <td>{{n.nombre}}</td>
+            <td>{{n.camada}}</td>
+            <td><a href="{% url 'eliminar_curso' n.id %}" class="btn btn-danger">BORRAR</a></td>
+            <td><a href="{% url 'editar_curso' n.id %}" class="btn btn-warning">EDITAR</a></td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <a href="{% url 'alta_curso' %}" class="btn btn-primary">Nuevo Curso</a>
+   
+    
+
+
+{% endblock %}

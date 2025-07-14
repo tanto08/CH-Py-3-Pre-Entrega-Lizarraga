@@ -1,0 +1,14 @@
+{% extends "padre.html" %}
+
+{% load static %}
+
+{% block contenido %}
+    <h1>Buscar tu Curso</h1>
+
+    <form action="buscar" method="POST">
+        {% csrf_token %}
+        <p>Nombre:</p>
+        <input type="text" name="nombre" required>  
+        <input type="submit" value="Enviar">
+    </form>
+{% endblock %}

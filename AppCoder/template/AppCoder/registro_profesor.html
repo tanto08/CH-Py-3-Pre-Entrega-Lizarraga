@@ -1,0 +1,12 @@
+{% extends 'padre.html' %}
+
+{% load static %}
+
+{% block contenido %}
+<h2>Registro de Profesor</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Registrarse</button>
+</form>
+{% endblock %}
