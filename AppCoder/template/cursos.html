@@ -1,30 +1,36 @@
 {% extends "padre.html" %}
-
 {% load static %}
 
 {% block contenido %}
 
-    <table class="table">
+<h1>Listado de Cursos</h1>
+
+<table class="table">
+    <thead>
         <tr>
-            <th>id</th>
+            <th>ID</th>
             <th>Nombre</th>
             <th>Camada</th>
+            <th colspan="2">Acciones</th>
         </tr>
+    </thead>
+    <tbody>
         {% for n in cursos %}
         <tr>
-            <td>{{n.id}}</td>
-            <td>{{n.nombre}}</td>
-            <td>{{n.camada}}</td>
-            <td><a href="{% url 'eliminar_curso' n.id %}" class="btn btn-danger">BORRAR</a></td>
-            <td><a href="{% url 'editar_curso' n.id %}" class="btn btn-warning">EDITAR</a></td>
+            <td>{{ n.id }}</td>
+            <td>{{ n.nombre }}</td>
+            <td>{{ n.camada }}</td>
+            <td>
+                <a href="{% url 'AppCoder:eliminar_curso' n.id %}" class="btn btn-danger">Borrar</a>
+            </td>
+            <td>
+                <a href="{% url 'AppCoder:editar_curso' n.id %}" class="btn btn-warning">Editar</a>
+            </td>
         </tr>
         {% endfor %}
+    </tbody>
+</table>
 
-    </table>
-
-    <a href="{% url 'alta_curso' %}" class="btn btn-primary">Nuevo Curso</a>
-   
-    
-
+<a href="{% url 'AppCoder:alta_curso' %}" class="btn btn-primary mt-3">Nuevo Curso</a>
 
 {% endblock %}

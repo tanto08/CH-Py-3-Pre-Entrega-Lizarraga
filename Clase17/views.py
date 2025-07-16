@@ -28,3 +28,6 @@ def probando_template(request):
 
 
     return HttpResponse(document)
+
+def inicio(request):
+    return render(request, 'AppCoder/inicio.html')

@@ -1,0 +1,80 @@
+{% extends 'padre.html' %}
+
+{% block contenido %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar Sesión</h3>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        {% if form.non_field_errors %}
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            {% for error in form.non_field_errors %}
+                                {{ error }}
+                            {% endfor %}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="mb-3">
+                            <label for="id_username" class="form-label">Nombre de usuario</label>
+                            <input type="text" 
+                                   name="username" 
+                                   class="form-control {% if form.username.errors %}is-invalid{% endif %}" 
+                                   id="id_username" 
+                                   value="{{ form.username.value|default:'' }}"
+                                   required
+                                   autofocus>
+                            {% if form.username.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.username.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_password" class="form-label">Contraseña</label>
+                            <input type="password" 
+                                   name="password" 
+                                   class="form-control {% if form.password.errors %}is-invalid{% endif %}" 
+                                   id="id_password" 
+                                   required>
+                            {% if form.password.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in form.password.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="remember_me" name="remember_me">
+                            <label class="form-check-label" for="remember_me">Recordar mi sesión</label>
+                        </div>
+                        
+                        <div class="d-grid gap-2 mb-3">
+                            <button type="submit" class="btn btn-primary py-2">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Ingresar
+                            </button>
+                        </div>
+                        
+                        <div class="text-center">
+                            <a href="{% url 'AppCoder:seleccion_registro' %}" class="text-decoration-none">¿No tienes cuenta? Regístrate</a>
+                            <span class="mx-2">•</span>
+                            <a href="{% url 'AppCoder:password_reset' %}" class="text-decoration-none">¿Olvidaste tu contraseña?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

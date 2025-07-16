@@ -21,19 +21,26 @@
     <body>
         <!-- Navigation-->
         <nav class="navbar navbar-light bg-light static-top">
-            <div class="container">
-                <a class="navbar-brand" href="#!">App Coder</a>
-                <a class="btn btn-primary" href="{% url 'profesores' %}" >Profesores</a>
-                <a class="btn btn-primary" href="{% url 'alumnos' %}">Alumnos</a>
-                <a class="btn btn-primary" href="{% url 'cursos' %}">Cursos</a>
-                
-                {% if not user.is_authenticated %}
-                    <a class="btn btn-danger" href="{% url 'login' %}">LogIn</a>
-                    <a class="btn btn-danger" href="{% url 'seleccion_registro' %}">SignUp</a>
-                {% else %}
-                    <span class="navbar-text me-2">Hola, {{ user.username }}</span>
-                    <a class="btn btn-outline-secondary" href="{% url 'logout' %}">LogOut</a>
-                {% endif %}
+        <div class="container">
+                <a class="navbar-brand" href="{% url 'AppCoder:inicio' %}">App Coder</a>
+            <!-- Usa el namespace AppCoder: para todas las URLs de tu app -->
+            <a class="btn btn-primary" href="{% url 'AppCoder:profesores' %}">Profesores</a>
+            <a class="btn btn-primary" href="{% url 'AppCoder:alumnos' %}">Alumnos</a>
+            <a class="btn btn-primary" href="{% url 'AppCoder:cursos' %}">Cursos</a>
+            <a class="btn btn-primary" href="{% url 'AppCoder:contacto' %}">Contacto</a>
+            
+            {% if user.is_authenticated %}
+                <span class="navbar-text mx-2">Hola, {{ user.username }}</span>
+
+                <form method="POST" action="{% url 'AppCoder:Logout' %}" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Cerrar Sesión</button>
+                </form>
+            {% else %}
+                <a class="btn btn-success" href="{% url 'AppCoder:login' %}">Iniciar Sesión</a>
+                <a class="btn btn-warning" href="{% url 'AppCoder:seleccion_registro' %}">Registrarse</a>
+            {% endif %}
+
             </div>
         </nav>
         <!-- Masthead-->
@@ -61,7 +68,7 @@
                     <div class="col-lg-6 h-100 text-center text-lg-start my-auto">
                         <ul class="list-inline mb-2">                         
                             <li class="list-inline-item">
-                                <a href="{% url 'contacto' %}">Contacto</a>
+                                <a href="{% url 'AppCoder:contacto' %}">Contacto</a>
                             </li>
                         </ul>
                         <p class="text-muted small mb-4 mb-lg-0">&copy; Powered by Coderhouse.</p>
@@ -86,10 +93,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-        <!-- * *                               SB Forms JS                               * *-->
-        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
     </body>
 </html>

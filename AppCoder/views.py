@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect# type: ignore
+from django.shortcuts import render, redirect, get_object_or_404 # type: ignore
 from django.http import HttpResponse
 from AppCoder.models import Curso
 from django.template import loader
 from django.contrib.auth.models import User
-from AppCoder.forms import Curso_formulario
+from AppCoder.forms import CursoFormulario
 from .forms import AlumnoRegistroForm, ProfesorRegistroForm
 from .models import Alumno, Profesor
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -11,17 +11,15 @@ from django.contrib.auth import login, logout
 # Create your views here.
 
 
-
 def inicio(request):
-    return render(request, "padre.html")
+    return render(request, "AppCoder/inicio.html")
+
 
 
 def cursos(request):
     cursos = Curso.objects.all()
     dicc = {"cursos":cursos}
-    plantilla = loader.get_template("cursos.html")
-    documento = plantilla.render(dicc)
-    return HttpResponse( documento)
+    return render(request, "cursos.html", dicc)
 
 
 
@@ -43,26 +41,23 @@ def alumnos(request):
 
 
 def contacto(request):
-    return render(request, "contacto.html")
+    return render(request, 'AppCoder/contacto.html')
 
 
 
 
 def curso_formulario(request):
-
     if request.method == "POST":
-        mi_formulario = Curso_formulario( request.POST )
-
+        mi_formulario = CursoFormulario(request.POST)  # ¡corregido!
         if mi_formulario.is_valid():
             datos = mi_formulario.cleaned_data          
-            
-            curso = Curso( nombre=datos['nombre'] , camada=datos['camada'])
+            curso = Curso(nombre=datos['nombre'], camada=datos['camada'])
             curso.save()
+            return redirect('AppCoder:cursos')  # redirige a la lista de cursos
+    else:
+        mi_formulario = CursoFormulario()  # ¡corregido!
 
-            return render( request , "padre.html")                 
-        
-    
-    return render( request , "formulario.html")
+    return render(request, "AppCoder/formulario.html", {"mi_formulario": mi_formulario})
 
 
 
@@ -88,32 +83,28 @@ def eliminar_curso(request, id):
     curso.delete()
 
     curso = Curso.objects.all()
-
-    return render(request, "cursos.html" , {"cursos":curso})
-
+    return render(request, "cursos.html", {"cursos": curso})
 
 
 
-def editar( request , id ):
 
-    curso = Curso.objects.get(id=id) 
+def editar_curso(request, id):
+    curso = get_object_or_404(Curso, id=id)
     
-    if request.method == "POST":
-        mi_formulario = Curso_formulario(request.POST)
+    if request.method == 'POST':
+        # Usamos instance para cargar los datos del curso a editar
+        mi_formulario = CursoFormulario(request.POST, instance=curso)
         if mi_formulario.is_valid():
-            datos = mi_formulario.cleaned_data
-            curso.nombre = datos['nombre']
-            curso.camada = datos['camada']
-            curso.save()
-
-            curso = Curso.objects.all()
-            return render(request , "cursos.html" , {"cursos":curso})
-
-
+            mi_formulario.save()
+            return redirect('cursos')  # Redirige a la lista de cursos
     else:
-        mi_formulario = Curso_formulario(initial={'nombre':curso.nombre, 'camada':curso.camada})
-
-    return render(request , "editar_curso.html" , {"mi_formulario":mi_formulario, "curso":curso })
+        # Mostramos el formulario con los datos actuales del curso
+        mi_formulario = CursoFormulario(instance=curso)
+    
+    return render(request, 'editar_curso.html', {
+        'mi_formulario': mi_formulario,
+        'curso': curso
+    })
        
 
 def seleccion_registro(request):
@@ -124,7 +115,17 @@ def registro_alumno(request):
         form = AlumnoRegistroForm(request.POST)
         if form.is_valid():
             user = form.save()
-            return redirect('inicio')
+            # Crear perfil de alumno
+            Alumno.objects.create(
+                user=user,
+                nombre=form.cleaned_data['nombre'],
+                apellido=form.cleaned_data['apellido'],
+                email=form.cleaned_data['email'],
+                fecha_nacimiento=form.cleaned_data['fecha_nacimiento'],
+                dni=form.cleaned_data['dni']
+            )
+            login(request, user)
+            return redirect('AppCoder:inicio')  # Cambia esto según tu URL de inicio
     else:
         form = AlumnoRegistroForm()
     return render(request, 'AppCoder/registro_alumno.html', {'form': form})
@@ -134,7 +135,17 @@ def registro_profesor(request):
         form = ProfesorRegistroForm(request.POST)
         if form.is_valid():
             user = form.save()
-            return redirect('inicio')
+            # Crear perfil de profesor
+            Profesor.objects.create(
+                user=user,
+                nombre=form.cleaned_data['nombre'],
+                apellido=form.cleaned_data['apellido'],
+                email=form.cleaned_data['email'],
+                dni=form.cleaned_data['dni'],
+                profesion=form.cleaned_data.get('profesion', '')
+            )
+            login(request, user)
+            return redirect('AppCoder:inicio')  # Cambia esto según tu URL de inicio
     else:
         form = ProfesorRegistroForm()
     return render(request, 'AppCoder/registro_profesor.html', {'form': form})

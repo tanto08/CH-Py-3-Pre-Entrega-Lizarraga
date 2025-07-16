@@ -117,8 +117,22 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Autenticación
+LOGIN_URL = 'AppCoder:login'
+LOGIN_REDIRECT_URL = 'AppCoder:inicio'
+LOGOUT_REDIRECT_URL = 'AppCoder:inicio'
+
+# Opcional: Para el "Recordar mi sesión"
+SESSION_COOKIE_AGE = 1209600  # 2 semanas en segundos
+SESSION_SAVE_EVERY_REQUEST = True
+
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
