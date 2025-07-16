@@ -48,14 +48,14 @@ def contacto(request):
 
 def curso_formulario(request):
     if request.method == "POST":
-        mi_formulario = CursoFormulario(request.POST)  # ¡corregido!
+        mi_formulario = CursoFormulario(request.POST)  
         if mi_formulario.is_valid():
             datos = mi_formulario.cleaned_data          
             curso = Curso(nombre=datos['nombre'], camada=datos['camada'])
             curso.save()
             return redirect('AppCoder:cursos')  # redirige a la lista de cursos
     else:
-        mi_formulario = CursoFormulario()  # ¡corregido!
+        mi_formulario = CursoFormulario()  
 
     return render(request, "AppCoder/formulario.html", {"mi_formulario": mi_formulario})
 
@@ -92,13 +92,13 @@ def editar_curso(request, id):
     curso = get_object_or_404(Curso, id=id)
     
     if request.method == 'POST':
-        # Usamos instance para cargar los datos del curso a editar
+       
         mi_formulario = CursoFormulario(request.POST, instance=curso)
         if mi_formulario.is_valid():
             mi_formulario.save()
             return redirect('cursos')  # Redirige a la lista de cursos
     else:
-        # Mostramos el formulario con los datos actuales del curso
+        
         mi_formulario = CursoFormulario(instance=curso)
     
     return render(request, 'editar_curso.html', {
