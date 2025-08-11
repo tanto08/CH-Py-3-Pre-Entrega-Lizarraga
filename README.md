@@ -1,6 +1,6 @@
-# CH-Py-3-Pre-Entrega-Lizarraga
+# CH-Py-Proyecto Final-Lizarraga
 
-Este es un pre proyecto realizado como entrega Nº 3 de Python en CoderHouse.  
+Este es el Proyecto Final de Python en CoderHouse.  
 Esta aplicación web fue desarrollada con Django para la gestión de cursos, profesores, alumnos y autenticación de usuarios.
 
 ---
@@ -13,7 +13,11 @@ Esta aplicación permite:
 - Buscar cursos por nombre desde la pantalla de inicio.
 - Registrar alumnos y profesores con formularios personalizados.
 - Inicio de sesión y cierre de sesión con manejo de sesiones.
+- Gestión de Avatar para los perfiles activos con un avatar por default.
 - Recuperación de contraseña.
+- Cambio de contraseña con manejo de perfil.
+- Limitación de campos para usuarios no registrados o sin logear.
+- Manejo de error 404.
 - Interfaz sencilla y responsiva usando Bootstrap 5.
 
 ---
