@@ -1,0 +1,21 @@
+{% extends 'padre.html' %}
+
+{% block contenido %}
+<h2>Gestión de usuario</h2>
+
+<h4>Cambiar contraseña</h4>
+<form method="post">
+    {% csrf_token %}
+    {{ pass_form.as_p }}
+    <button type="submit" name="password_change" class="btn btn-primary">Cambiar contraseña</button>
+</form>
+
+<hr>
+
+<h4>Cambiar avatar</h4>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ avatar_form.as_p }}
+    <button type="submit" name="avatar_change" class="btn btn-secondary">Actualizar avatar</button>
+</form>
+{% endblock %}

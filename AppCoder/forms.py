@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django import forms
-from .models import Alumno, Profesor
+from .models import Alumno, Profesor, Profile
 from .models import Curso
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm, SetPasswordForm
@@ -92,3 +92,8 @@ class BootstrapSetPasswordForm(SetPasswordForm):
             'class': 'form-control',
             'placeholder': 'Confirmar nueva contraseña'
         })
+
+class AvatarForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['avatar']

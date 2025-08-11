@@ -1,13 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404 # type: ignore
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from AppCoder.models import Curso
 from django.template import loader
 from django.contrib.auth.models import User
 from AppCoder.forms import CursoFormulario
-from .forms import AlumnoRegistroForm, ProfesorRegistroForm
+from .forms import AlumnoRegistroForm, ProfesorRegistroForm, AvatarForm
 from .models import Alumno, Profesor
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.contrib.auth import login, logout
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from django.contrib.auth import login, logout, update_session_auth_hash
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 
 
@@ -149,3 +151,30 @@ def registro_profesor(request):
     else:
         form = ProfesorRegistroForm()
     return render(request, 'AppCoder/registro_profesor.html', {'form': form})
+
+
+@login_required
+def perfil_usuario(request):
+    if request.method == 'POST':
+        pass_form = PasswordChangeForm(request.user, request.POST)
+        avatar_form = AvatarForm(request.POST, request.FILES, instance=request.user.profile)
+        
+        if 'password_change' in request.POST and pass_form.is_valid():
+            user = pass_form.save()
+            update_session_auth_hash(request, user)  # para que no cierre sesión
+            return redirect('AppCoder:perfil_usuario')
+        
+        if 'avatar_change' in request.POST and avatar_form.is_valid():
+            avatar_form.save()
+            return redirect('AppCoder:perfil_usuario')
+    else:
+        pass_form = PasswordChangeForm(request.user)
+        avatar_form = AvatarForm(instance=request.user.profile)
+    
+    return render(request, 'AppCoder/perfil_usuario.html', {
+        'pass_form': pass_form,
+        'avatar_form': avatar_form
+    })
+
+def trigger_404(request):
+    raise Http404("Probando página 404 personalizada")

@@ -1,8 +1,10 @@
-from django.urls import path 
+from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import  LogoutView
 from .forms import BootstrapAuthenticationForm, BootstrapPasswordResetForm, BootstrapSetPasswordForm
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = "AppCoder"
 
@@ -13,6 +15,7 @@ urlpatterns = [
     path('alumnos/', views.alumnos, name='alumnos'),
     path('cursos/', views.cursos, name='cursos'),
     path('contacto/', views.contacto, name='contacto'),
+    
     
     # URLs para gestión de cursos
     path('alta_curso/', views.curso_formulario, name='alta_curso'),
@@ -34,6 +37,9 @@ urlpatterns = [
     ), name='login'),
     
     path('accounts/logout/', LogoutView.as_view(next_page='AppCoder:inicio'), name="Logout"),
+
+    #URLs para gestion de usuario
+    path('perfil/', views.perfil_usuario, name='perfil_usuario'),
     
     # URLs para recuperación de contraseña
     path('accounts/password_reset/', auth_views.PasswordResetView.as_view(
@@ -57,4 +63,6 @@ urlpatterns = [
     path('accounts/reset/done/', auth_views.PasswordResetCompleteView.as_view(
         template_name='AppCoder/password_reset_complete.html'
     ), name='password_reset_complete'),
-]
+
+    path('trigger-404/', views.trigger_404, name='trigger_404'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
