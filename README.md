@@ -33,8 +33,8 @@ Esta aplicación permite:
 ---
 
 ## Pasos futuros
-- Implementar capas de autenticación para que la pestaña cursos se muestre en modo edición para usuarios definidos.
-- Agregar vistas para editar datos del usuario logeado.
+- Agregar vistas para agregar/editar cursos en los que se encuentran inscriptos/imparten los usuarios.
+- Rediseñar las vistas de Profesores para hacer una capa especifica.
 
 ---
 
